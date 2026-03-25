@@ -491,63 +491,6 @@ All plots auto-saved to `docs/eda_plots/` after running the pipeline:
 
 ---
 
-## 📝 Resume Description
-
-**Customer Segmentation ML System** | Python, scikit-learn, Streamlit, Docker | 2024
-
-> Built a production-grade customer segmentation system on the UCI Online Retail II dataset (~1M transactions). Engineered a 11-feature RFM matrix (Recency, Frequency, Monetary + CLV, AOV, Tenure, etc.) for 4,300+ customers. Trained and compared K-Means, Hierarchical Clustering, DBSCAN, and Gaussian Mixture Models; selected K-Means (Silhouette=0.41) for production. Deployed a 5-page Streamlit dashboard with real-time segment prediction, batch CSV scoring, and per-segment marketing strategy engine. Containerised with Docker; 30+ pytest unit and integration tests.
-
----
-
-## 🎤 Interview Q&A
-
-### 1. Why did you choose K-Means over other algorithms?
-K-Means achieved the best Silhouette Score (0.412) compared to Hierarchical (0.389), DBSCAN (0.271), and GMM (0.401). Beyond metrics, K-Means is also interpretable — the centroids have direct business meaning as "average customer profiles" — and scales to production data volumes. DBSCAN performed poorly because customer spend data doesn't form density-based clusters naturally.
-
-### 2. How did you choose the optimal number of clusters (k)?
-I used a combination of the Elbow Method (looking for the knee in the WCSS/inertia curve) and Silhouette Score analysis across k=2 to 10. I also cross-validated with the Davies-Bouldin and Calinski-Harabasz scores. k=4 offered the best trade-off between cluster quality and business interpretability.
-
-### 3. Why RobustScaler instead of StandardScaler?
-Customer spend data is highly right-skewed — a few customers spend 100× the median. StandardScaler uses mean and standard deviation, which are sensitive to outliers; this would compress the spread of most customers. RobustScaler uses the median and IQR, making it outlier-resistant and preserving the structure of the majority distribution.
-
-### 4. What is the business impact of this segmentation?
-The model reveals that 18% of customers (Champions) generate 61% of revenue. This allows the business to: allocate marketing budget proportionally, create a VIP programme for Champions, run low-cost win-back emails for Hibernating segments instead of expensive blanket discounts, and prevent churn of At-Risk customers before they leave.
-
-### 5. How would you retrain this model in production?
-I'd set up a monthly retraining trigger (e.g., AWS Lambda or Airflow DAG) that: pulls the latest transaction data, reruns the feature engineering pipeline, trains a new K-Means model, evaluates it against the previous model's Silhouette Score, and promotes it only if it meets the quality threshold. The Streamlit app loads the model at startup, so redeployment = rebuild Docker image.
-
-### 6. What are the limitations of K-Means for customer segmentation?
-- **Assumes spherical clusters**: Customer behaviour can form non-convex shapes (GMM handles this better)
-- **Sensitive to initialisation**: Mitigated by k-means++ and n_init=10
-- **Fixed k**: Real customer behaviour has fuzzy boundaries; GMM soft assignments are more realistic
-- **No temporal dynamics**: A single snapshot misses seasonal behaviour — a sliding-window RFM would be more robust
-
-### 7. How did you handle missing CustomerIDs (~25% of rows)?
-I chose to drop them rather than impute, because CustomerID is the primary key for customer-level aggregation. Imputing a synthetic ID would create phantom customers and pollute the RFM calculation. The dropped transactions are predominantly non-customer purchases (e.g., walk-in or anonymous sales) and their removal doesn't bias the segmentation.
-
-### 8. How would you scale this to 10 million customers?
-- **Feature computation**: Use PySpark or Dask for distributed RFM aggregation
-- **Clustering**: Mini-batch K-Means (sklearn) handles millions of rows; alternatively, approximate nearest-neighbour search for large-scale GMM
-- **Serving**: Replace Streamlit with a FastAPI microservice + Redis cache for sub-10ms predictions
-- **Storage**: Move artefacts to S3/GCS; use MLflow for model versioning
-
-### 9. What additional features would improve the model?
-- **Product category affinity** (which categories does the customer favour?)
-- **Price sensitivity** (do they respond to discounts?)
-- **Multi-channel behaviour** (mobile vs desktop, email open rates)
-- **Seasonality** (Christmas shoppers vs year-round)
-- **Return rate** (high returners are less profitable than Monetary suggests)
-
-### 10. How do you evaluate a clustering model when there's no ground truth?
-Internal metrics only:
-- **Silhouette Score** — cohesion vs separation (1.0 = perfect)
-- **Davies-Bouldin** — ratio of intra- to inter-cluster distances (lower = better)
-- **Calinski-Harabasz** — ratio of between- to within-cluster variance (higher = better)
-
-Plus business validation: do the clusters make sense to domain experts? Are the marketing strategies actionable? A cluster that scores well mathematically but has no business interpretation is not useful.
-
----
-
 ## 📄 License
 
 MIT License — free to use, modify, and distribute with attribution.
@@ -572,6 +515,6 @@ Code style: `black . && isort . && flake8 src/`
 
 **Built with ❤️ for Data Science portfolios**
 
-[⭐ Star this repo](https://github.com/yourusername/customer-segmentation) • [🐛 Report Bug](https://github.com/yourusername/customer-segmentation/issues) • [💡 Request Feature](https://github.com/yourusername/customer-segmentation/issues)
+[⭐ Star this repo](https://github.com/shubhamkjha369/customer-segmentation) • [🐛 Report Bug](https://github.com/shubhamkjha369/customer-segmentation/issues) • [💡 Request Feature](https://github.com/shubhamkjha369/customer-segmentation/issues)
 
 </div>
