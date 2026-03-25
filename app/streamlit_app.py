@@ -676,7 +676,7 @@ elif page == "Methodology":
 
     st.divider()
     st.markdown("""
-    **GitHub**: `https://github.com/yourusername/customer-segmentation`  
+    **GitHub**: `https://github.com/shubhamkjha369/customer-segmentation`  
     **Built with**: Python 3.10 · scikit-learn · Streamlit · Plotly  
     **Deployment**: Docker → Streamlit Community Cloud / Render
     """)
