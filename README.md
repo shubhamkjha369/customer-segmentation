@@ -211,7 +211,7 @@ customer-segmentation/
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/yourusername/customer-segmentation.git
+git clone https://github.com/shubhamkjha369/customer-segmentation.git
 cd customer-segmentation
 
 python -m venv venv
