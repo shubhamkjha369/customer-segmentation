@@ -56,7 +56,6 @@ COPY data/processed/        ./data/processed/
 
 # ── Streamlit config ─────────────────────────────────────────
 RUN mkdir -p /app/.streamlit
-COPY docker/streamlit_config.toml /app/.streamlit/config.toml 2>/dev/null || true
 
 RUN printf '[server]\n\
 headless = true\n\
