@@ -1,5 +1,5 @@
 # 🛍️ Customer Segmentation System
-
+### Streamlit-app - https://customer-segmentation-skjha.streamlit.app/
 > **Production-grade ML system** for behavioural customer segmentation using RFM analysis, K-Means clustering, and real-time prediction — built on the UCI Online Retail II dataset.
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://python.org)
