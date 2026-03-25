@@ -55,51 +55,51 @@ Customer segmentation is the process of dividing customers into groups based on 
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    DATA LAYER                                    │
-│  Kaggle (Online Retail II) → data/raw/ → data/processed/         │
+│                    DATA LAYER                                   │
+│  Kaggle (Online Retail II) → data/raw/ → data/processed/        │
 └──────────────────────────┬──────────────────────────────────────┘
                            │
 ┌──────────────────────────▼──────────────────────────────────────┐
 │                    ML PIPELINE (src/)                           │
 │                                                                 │
-│  data_preprocessing.py                                         │
+│  data_preprocessing.py                                          │
 │    ├── Schema validation                                        │
 │    ├── Null handling (CustomerID: drop ~25%)                    │
 │    ├── Cancellation removal (InvoiceNo C*)                      │
 │    ├── Duplicate elimination                                    │
 │    ├── Outlier capping (IQR 99th percentile)                    │
-│    └── Temporal feature extraction                             │
-│                           │                                    │
-│  feature_engineering.py   ▼                                    │
-│    ├── RFM aggregation per customer                            │
-│    ├── Advanced features: CLV, AOV, Tenure, CV …              │
-│    ├── Quartile-based RFM scoring (1–4)                        │
-│    └── RobustScaler (handles spend outliers)                   │
-│                           │                                    │
-│  train_model.py           ▼                                    │
-│    ├── Elbow + Silhouette analysis (k=2…10)                    │
-│    ├── K-Means (primary — best silhouette)                     │
-│    ├── Hierarchical Clustering (Ward linkage)                  │
-│    ├── DBSCAN (noise detection)                                │
-│    ├── Gaussian Mixture Models                                 │
-│    └── Metric comparison + artefact persistence               │
-│                           │                                    │
-│  predict.py               ▼                                    │
-│    ├── Load scaler + model + feature list                      │
-│    ├── Single customer inference (<5ms)                        │
-│    ├── Batch inference (DataFrame → labels)                    │
-│    └── Business profile + strategy injection                   │
+│    └── Temporal feature extraction                              │
+│                           │                                     │
+│  feature_engineering.py   ▼                                     │
+│    ├── RFM aggregation per customer                             │
+│    ├── Advanced features: CLV, AOV, Tenure, CV …                │
+│    ├── Quartile-based RFM scoring (1–4)                         │
+│    └── RobustScaler (handles spend outliers)                    │
+│                           │                                     │
+│  train_model.py           ▼                                     │
+│    ├── Elbow + Silhouette analysis (k=2…10)                     │
+│    ├── K-Means (primary — best silhouette)                      │
+│    ├── Hierarchical Clustering (Ward linkage)                   │
+│    ├── DBSCAN (noise detection)                                 │
+│    ├── Gaussian Mixture Models                                  │
+│    └── Metric comparison + artefact persistence                 │
+│                           │                                     │
+│  predict.py               ▼                                     │
+│    ├── Load scaler + model + feature list                       │
+│    ├── Single customer inference (<5ms)                         │
+│    ├── Batch inference (DataFrame → labels)                     │
+│    └── Business profile + strategy injection                    │
 └──────────────────────────┬──────────────────────────────────────┘
                            │
 ┌──────────────────────────▼──────────────────────────────────────┐
 │                    SERVING LAYER (app/)                         │
 │                                                                 │
 │  Streamlit Dashboard                                            │
-│    ├── 📊 Dashboard: KPIs, scatter, revenue by segment         │
+│    ├── 📊 Dashboard: KPIs, scatter, revenue by segment          │ 
 │    ├── 🔍 Single customer prediction with recommendations       │
-│    ├── 📋 Batch CSV upload + scored download                   │
-│    ├── 💡 Per-segment marketing playbooks                      │
-│    └── 📚 Methodology & model documentation                   │
+│    ├── 📋 Batch CSV upload + scored download                    │
+│    ├── 💡 Per-segment marketing playbooks                       │
+│    └── 📚 Methodology & model documentation                     │
 └──────────────────────────┬──────────────────────────────────────┘
                            │
 ┌──────────────────────────▼──────────────────────────────────────┐
