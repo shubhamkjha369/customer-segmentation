@@ -1,0 +1,148 @@
+# ============================================================
+# Customer Segmentation Project — Configuration
+# ============================================================
+
+project:
+  name: "Customer Segmentation System"
+  version: "1.0.0"
+  author: "Your Name"
+  description: >
+    Production-grade customer segmentation pipeline using RFM analysis
+    and unsupervised ML algorithms on the UCI Online Retail dataset.
+
+# ----------------------------------------------------------
+# Data Paths
+# ----------------------------------------------------------
+data:
+  raw_path: "data/raw/online_retail.xlsx"
+  processed_path: "data/processed/rfm_features.csv"
+  external_path: "data/external/"
+  kaggle_dataset: "mashlyn/online-retail-ii-uci"
+  kaggle_url: "https://www.kaggle.com/datasets/mashlyn/online-retail-ii-uci"
+
+# ----------------------------------------------------------
+# Preprocessing
+# ----------------------------------------------------------
+preprocessing:
+  min_quantity: 1
+  min_unit_price: 0.01
+  remove_cancelled: true         # Remove invoices starting with 'C'
+  remove_test_customers: true
+  missing_customer_id: "drop"    # Options: drop | impute
+  country_filter: null           # null = all countries; or e.g. "United Kingdom"
+
+# ----------------------------------------------------------
+# Feature Engineering (RFM)
+# ----------------------------------------------------------
+feature_engineering:
+  snapshot_days_offset: 1        # Days after last transaction for recency calc
+  rfm_quantiles: 4               # Number of bins for RFM scoring (4 = quartiles)
+  additional_features:
+    - clv                        # Customer Lifetime Value
+    - avg_order_value            # Average Order Value
+    - purchase_frequency         # Orders per active month
+    - unique_products            # Product diversity
+    - avg_basket_size            # Items per invoice
+    - returns_rate               # % of transactions that are returns
+    - tenure_days                # Days since first purchase
+
+# ----------------------------------------------------------
+# EDA
+# ----------------------------------------------------------
+eda:
+  output_dir: "docs/eda_plots/"
+  fig_format: "png"
+  dpi: 150
+  correlation_method: "spearman"
+
+# ----------------------------------------------------------
+# Modeling
+# ----------------------------------------------------------
+modeling:
+  random_state: 42
+  test_algorithms:
+    - kmeans
+    - hierarchical
+    - dbscan
+    - gmm
+
+  kmeans:
+    k_range: [2, 11]             # Range of k to test in elbow method
+    optimal_k: 4                 # Set after elbow/silhouette analysis
+    init: "k-means++"
+    n_init: 10
+    max_iter: 300
+
+  hierarchical:
+    n_clusters: 4
+    linkage: "ward"
+    affinity: "euclidean"
+
+  dbscan:
+    eps: 0.5
+    min_samples: 5
+    metric: "euclidean"
+
+  gmm:
+    n_components: 4
+    covariance_type: "full"
+    max_iter: 200
+
+  pca:
+    n_components: 2              # For visualization
+    n_components_full: 0.95      # Explained variance threshold for modeling
+
+# ----------------------------------------------------------
+# Evaluation Metrics
+# ----------------------------------------------------------
+evaluation:
+  metrics:
+    - silhouette_score
+    - davies_bouldin_score
+    - calinski_harabasz_score
+  primary_metric: "silhouette_score"
+
+# ----------------------------------------------------------
+# Model Persistence
+# ----------------------------------------------------------
+model:
+  save_dir: "models/"
+  scaler_filename: "scaler.pkl"
+  pca_filename: "pca_transformer.pkl"
+  kmeans_filename: "kmeans_model.pkl"
+  label_encoder_filename: "label_encoder.pkl"
+  features_filename: "feature_names.pkl"
+  best_model: "kmeans"           # Model selected for production
+
+# ----------------------------------------------------------
+# Cluster Labels (set after analysis)
+# ----------------------------------------------------------
+cluster_labels:
+  0: "Champions"
+  1: "At-Risk Customers"
+  2: "Potential Loyalists"
+  3: "Hibernating"
+
+cluster_colors:
+  0: "#2ECC71"
+  1: "#E74C3C"
+  2: "#3498DB"
+  3: "#F39C12"
+
+# ----------------------------------------------------------
+# Streamlit App
+# ----------------------------------------------------------
+app:
+  title: "Customer Segmentation Dashboard"
+  port: 8501
+  theme: "dark"
+  cache_ttl: 3600
+
+# ----------------------------------------------------------
+# Logging
+# ----------------------------------------------------------
+logging:
+  level: "INFO"
+  log_dir: "logs/"
+  log_file: "pipeline.log"
+  format: "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
